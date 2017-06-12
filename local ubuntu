@@ -1,0 +1,95 @@
+备份源
+
+
+wget  -P /tmp 192.168.2.8/ubuntu/software/sources.list
+
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak   #备份
+sudo \cp -rf /tmp/sources.list /etc/apt/sources.list #覆盖
+
+
+##sudo cp /etc/apt/sources.list /tmp/sources.list.bak
+##putty 上传文件
+##scp /tmp/sources.list.bak aa@192.168.2.8:/tmp/sources.list
+
+#替换源
+
+#sudo nano /etc/apt/sources.list
+
+
+
+安装ssh
+
+sudo apt-get install openssh-server
+sudo service ssh start
+
+
+
+
+升级
+sudo apt update
+sudo apt upgrade
+
+下载anaconda
+
+wget  -P /tmp 192.168.2.8/ubuntu/software/Anaconda3-4.4.0-Linux-x86_64.sh
+
+sudo chmod 777 /tmp/Anaconda*
+cd /tmp
+
+bash /tmp/Anaconda*
+
+
+
+
+
+TensorFlow 环境配置和切换
+
+conda create -n TensorFlow python=3.6
+
+进入TensorFlow环境
+
+source activate TensorFlow
+
+
+# 激活环境activate this environment, use:
+# > source activate TensorFlow
+#
+# 退出环境To deactivate this environment, use:
+# > source deactivate TensorFlow
+
+
+conda install IPython
+conda install jupyter
+conda install opencv
+conda install ffmpeg
+conda install matplotlib
+
+
+which ipython
+which python
+which jupyter
+which opencv
+which tensorflow
+
+# 添加Anaconda的TUNA镜像
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+# TUNA的help中镜像地址加有引号，需要去掉
+
+# 设置搜索时显示通道地址
+conda config --set show_channel_urls yes
+
+
+
+
+
+
+proxy_servers: 
+'http://192.168.2.90:2099': 'https://192.168.2.90:2099'
+
+
+source activate TensorFlow
+tensorboard --logdir /root/logs
+#用IP：6006访问
+
+conda search *
+conda install *
