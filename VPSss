@@ -1,0 +1,172 @@
+ubuntu 代理
+
+
+
+
+配置
+
+
+开启ssh
+
+sudo apt-get install openssh-server
+sudo service ssh start
+
+安装
+apt-get update
+apt install shadowsocks
+
+配置shadowsocks服务端：
+nano /etc/shadowsocks.json 文件，将下面的内容放进去：
+
+{
+"server":"0.0.0.0",
+"server_port":2099,
+"local_address": "127.0.0.1",
+"local_port":1080,
+"password":"XXXXXXXXXXXXXXXXXXXXXXX",
+"timeout":300,
+"method":"aes-256-cfb",
+"fast_open": false,
+"workers": 1
+}
+
+
+wget https://raw.githubusercontent.com/Teddysun/across/master/bench.sh
+
+
+
+运行速度测试
+wget -qO- bench.sh | bash
+
+
+安装superviser
+apt-get install supervisor
+
+nano /etc/supervisor/conf.d/shadowsocks.conf  ，增加下面的内容：
+
+[program:shadowsocks]
+command=ssserver -c /etc/shadowsocks.json
+autorestart=true
+user=nobody
+
+
+nano /etc/default/supervisor 文件的后面加入下面的一行内容：
+
+ulimit -n 51200
+接着运行命令,启动supervisor:
+
+service supervisor start
+supervisorctl reload
+现在supervisor启动了。
+
+supervisorctl tail -f shadowsocks stderr   //查看shadowsocks日志
+supervisorctl restart shadowsocks        //重启shadowsocks进程
+supervisorctl start shadowsocks        //启动shadowsocks进程
+supervisorctl stop shadowsocks        //停止shadowsocks进程
+
+
+
+
+升级内核
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.11.2/linux-image-4.11.2-041102-generic_4.11.2-041102.201705201036_amd64.deb
+
+dpkg -i linux-image-4.11.*.deb
+update-grub
+
+reboot
+
+uname -a 查看内核
+
+开启BBR
+echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+
+保存
+sysctl -p
+
+验证
+sysctl net.ipv4.tcp_available_congestion_control
+lsmod | grep bbr
+
+
+修改root密码
+
+sudo passwd root
+
+echo "XXXXXXXXXXXXXXXXXXXXXXXX" | passwd --stdin root
+
+echo ("XXXXXXXXXXXXXXXXXX" ; sleep 1 ; echo "XXXXXXXXXXXXXXXXXXX) | passwd root
+
+
+
+修改ssh登陆
+
+#!/bin/sh
+
+
+# NOTE: This is an example that sets up SSH authorization. To use it, you'd need to replace "ssh-rsa AA... youremail@example.com" with your SSH public.
+# You can replace this entire script with anything you'd like, there is no need to keep it
+
+
+mkdir -p /root/.ssh
+chmod 600 /root/.ssh
+echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkg4cUwbKZ6ZruUKMMRzrGEw9CkxDgzgkMh7lgpu1/EyyktssGuvNApx7j7TaqOVQpxXg5Puc1vscGWld2/IpF9b6kh4PMqcPxN0vuXCWFn6h7X7a78bEzAhD1br14Z4eQP8jHFxPq4pZ7CZBFNEITJhQuPEsGkhPd953aPKFP5FijlPoYCbXNsAgN2P8YBWIHeO3cFmgKeZkehanv+eLiNCpe5xNGL9HM374lYWzRj3tm+hU3utKGv5cXUVPEH6UkhICEmuhF3sOYzRibQWE6SpyCRtKgvGeMPqk49eBvQyRiY39gkYc2+VnJINeewT6VKbJtPB+D5a19Wv3jXaCJVt64AwJV5zbZF+nmBQ+XSEr3iR8iPmc2k0Xk1DAFfrYloFr1SKrnefuB7zA96mIpjDLLcNg+DV1ifubfB4eSaW0c5v8Ge0qY8k7XhXQkwvADlD7LXJyBjudpcfHoU1eENa1agw8gb2GXXT2LEw9AdmaVkItcj+zF+IunfERXg4AsmaTqMz/K/oe7LlK0I0hyKASZMLt/INX+DHV7v/PohdoyUC9o8lUS+3e2tX/r9s3KMWZiLd4oHqTY5SKRBJasKYNoS68CSSFBd8y+Hal2byG3taPT514eneGBygEtN64OTbEupwPdgsvwZtBjfGUvi8QEyiAw+vWvec92z5/sRw== e001@ubuntu > /root/.ssh/authorized_keys
+chmod 700 /root/.ssh/authorized_keys
+
+
+
+linux链接
+ssh -i  ~/.ssh/id_rsa root@45.32.35.168
+
+
+查看网络状态
+nload 
+
+iftop
+
+
+
+youtube-dl -o '/home/ftp/Jules/%(title)s.%(ext)s'   -f 720p__source_  'https://www.twitch.tv/julesmeister'
+
+
+
+
+
+
+
+
+
+
+socks5代理
+
+ssh -N -D -f 0.0.0.0:1080 localhost
+=
+-D 换端口到1080.-N 闲置，本地不执行命令 -f 后台运行
+
+
+Access control can be implemented via iptables. For example, to allow only people from the ip 1.2.3.4 to use the SOCKS5 proxy, add the following iptables rules:
+
+iptables -A INPUT --src 1.2.3.4 -p tcp --dport 1080 -j ACCEPT
+iptables -A INPUT -p tcp --dport 1080 -j REJECT
+
+The first rule says, allow anyone from 1.2.3.4 to connect to port 1080, and the other rule says, deny everyone else from connecting to port 1080.
+
+
+
+
+
+
+openssl证书
+
+#  /home/server/.jupyter/secret/mykey.key
+# 在linux下执行，遇到询问的地方一路回车即可
+openssl req -x509 -nodes -days 3000 -newkey rsa:1024 -keyout mykey.key -out mycert.pem
+
+# 会在当前文件夹下生成 mycert.pem，我将它移到.jupyter/secret文件夹下面，方便管理
+# 先创建.secret文件夹
+cd .jupyter
+mkdir secret  
+# 移动
+cd ~
+mv mycert.pem .jupyter/secret/
+
