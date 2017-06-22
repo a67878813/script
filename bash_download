@@ -1,0 +1,47 @@
+#!/bin/bash
+# This is 02 script.
+log='./updaaaat.log'
+echo -e '\e[1;32mBase on\e[33m youtube-dl\e[1;32m to recording stream video \e[0m' 
+myNum=0
+function random()
+{
+    min=$1;
+    max=$2-$1;
+    num=$(date +%-s+%-N);
+    ((retnum=num%max+min));
+    #进行求余数运算即可
+    echo $retnum;
+    #这里通过echo 打印出来值，然后获得函数的，stdout就可以获得值
+    #还有一种返回，定义全价变量，然后函数改下内容，外面读取
+}
+Circal=135
+#得到1-10的seq数据项
+beginTime=$(random 1 6);
+sleepTime=$(random 20 25);
+	echo "1-30",$beginTime;
+	echo "150-200",$sleepTime;
+echo radombegintime=$beginTime;
+sleep $beginTime
+echo '##########################'
+while true ; do
+TODAY=`date "+%Y%m%d%H%M%S"`  
+
+echo -e "\e[1;31m##########################\e[0m" 
+echo -e CirculationTime =  "\e[1;32m""${myNum}\e[0m" 
+echo number = ${myNum} >> ${log}
+echo -e "\e[1;31m##########################\e[0m" 
+echo Date and Time = ${TODAY} >> ${log}
+echo 
+echo -e TMP="\e[1;32m"${TODAY}"\e[0m" 
+echo -e "\e[1;31mCircalTime ${Circal}  s\e[0m" ""
+youtube-dl -o '/mnt/youtube/mmd2/%(title)s.%(ext)s' -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --playlist-start ${Circal}  --proxy "socks5://192.168.2.90:2222" 'https://www.youtube.com/watch?v=7Xk0ZpWpvqI&list=PLZhlamFSwFtQO4VQEizgEEshiWeVQPP--' 
+
+echo -e "\e[1;31mbegin sleeping $sleepTime s\e[0m" "among "
+((Circal=Circal+1))
+echo -e "\e[1;31mCircalTime${Circal}  \e[0m" ""
+
+sleep $sleepTime #xiuxi 200s
+ ((myNum=myNum+1))
+
+
+done
