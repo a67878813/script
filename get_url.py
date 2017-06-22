@@ -22,7 +22,7 @@ html_tempfile = 'temphtml.txt'
 os.remove(html_tempfile)
 for i in range(30,55):
     print(i,"..")
-    url_request = 'http://ecchi.iwara.tv/videos?page=' + str(i)
+    url_request = 'http://www.iwara.tv/videos?page=' + str(i)
 
     html = requests.get(url_request,headers = hea)  
   
@@ -63,7 +63,7 @@ endset = set(m_tr) #合并 一样的地址JJ
 
 for line in endset: 
     temp = line[6:-1]
-#    front = 'http://ecchi.iwara.tv'
+#    front = 'http://www.iwara.tv'
 #    print(line[6:-1])#
 
 file = 'endlist.txt'
