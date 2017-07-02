@@ -1,13 +1,12 @@
 
 # coding: utf-8
 
-# In[104]:
 
 import os
 import os.path
 import json
 import random
-#contents为预遍历flv目录
+#contents为预计遍历flv目录
 contents = "/mnt2"
 
 #******************************
@@ -62,6 +61,7 @@ for line in end_list:
     child.wait()
     child2 = subprocess.Popen(["mv",contents+"/_temp/output"+str(salt),line])
     child2.wait()
+    #等待子进程结束，父进程继续
     print("next")
     
     
