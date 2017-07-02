@@ -1,6 +1,20 @@
 
 # coding: utf-8
 
+#使用前需安装yamdi
+#sudo apt install yamdi
+#ubuntu 16.04LTS
+#与win机器mount命令示例：
+#sudo mount -t cifs -o username="用户名",password="密码",uid=1000 //192.168.2.90/raid5_5-9/直播录像 /mnt2
+#若目录不存在,terminal中
+#sudo mkdir mnt2
+#sudo chown -R linux用户名：linux用户名 mnt2 
+
+
+#使用方法 ：
+#1.修改脚本预计遍历flv的目录（contents变量）后
+#2.终端（terminal）中 cd 进入相应目录。 
+#python3 flvrepair2.py
 
 import os
 import os.path
@@ -42,7 +56,7 @@ for line in s:
 print(end_list)
 
 
-#子进程相关木块
+#子进程相关模块
 import subprocess
 #判断临时目录是否存在
 if os.path.isdir(contents+"/_temp"):
