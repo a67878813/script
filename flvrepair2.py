@@ -68,7 +68,8 @@ else:
 #清空临时目录。风险高
 #os.remove(contents+"/_temp")
 for line in end_list:
-    #增加随机数 避免临时文件冲突
+    #增加随机数 避免多线程后临时文件冲突
+    #单块HDD多线程效率差，至多2线程。
     salt = random.randint(11000, 88000)
     print(line)
     child = subprocess.Popen(["yamdi","-i",line,"-o",contents+"/_temp/output"+str(salt)])
