@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+#可用于crontab 定时任务
 import os
 import subprocess,signal
 import time
