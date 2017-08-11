@@ -51,7 +51,7 @@ time.sleep(30)
 #inf_command = 'xterm  -T {0} -display :0 -hold -e "cd /home/e001/SC2/;./script'
 #sup_command = ';exec bash;"'
 for t in range(1,150):
-    bash_command = 'xterm  -T {0} -display :0 +cm -geometry 100x10 -hold -e "cd /home/e001/SC2/;./script{1};exec bash;"'.format('sc'+str(t),t)
+    bash_command = 'xterm  -T {0} -display :0 +cm -geometry 100x10 -hold -e "export PATH=$PATH:/usr/local/bin;cd /home/e001/SC2/;./script{1};exec bash;"'.format('sc'+str(t),t)
     print(bash_command)
     time.sleep(0.6)
     os.popen(bash_command)
