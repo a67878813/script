@@ -1,5 +1,34 @@
 
 各种脚本仓库 
+
+
+
+===========================
+add_youtube_upload_pool.py
+增加上传列表
+upload_youtube.py
+上传
+
+
+flvrepair2.py
+flv文件时间戳修复
+
+
+get_url.py
+简易字符串处理
+
+ios_kuwoMusic_trans.py
+酷我音乐转换
+
+
+
+
+
+
+
+
+
+
 ===========================
 该文件用来测试和展示书写README的各种markdown语法。GitHub的markdown语法在标准的markdown语法基础上做了扩充，称之为`GitHub Flavored Markdown`。简称`GFM`，GFM在GitHub上有广泛应用，除了README文件外，issues和wiki均支持markdown语法。
 
