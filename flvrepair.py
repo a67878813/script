@@ -96,7 +96,7 @@ for line in end_list:
         print(colored(line,"red"))
         print(child.stderr)
         continue
-    time.sleep(2)
+    time.sleep(10)
     try:
         child2 = subprocess.Popen(["mv","-f",contents+"/_temp/output.tmp",line],stderr=subprocess.STDOUT)
         child2.wait()    #等待子进程结束，父进程继续
@@ -105,7 +105,7 @@ for line in end_list:
         print(colored("mv错误","red"))
         print(colored(line,"red"))
         continue
-    time.sleep(2)
+    time.sleep(10)
  #   
     try:
         os.utime(line, (ctime,ctime))
@@ -143,4 +143,3 @@ if error_counts == 0 :
     print(colored("全部完成","green"))
 else:
     print(colored("全部完成 with error = "+str(error_counts),"red"))
-
