@@ -130,7 +130,7 @@ for root, dirs, files in os.walk(contents):
                         print(f'                解压失败 ')
                         break
 
-                    print("不应执行此行")
+                    #print("不应执行此行")
 print('=============================================')
 print('end \n\r 未解压文件如下')
 for i in error_files:
