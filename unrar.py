@@ -119,7 +119,7 @@ for root, dirs, files in os.walk(contents):
                             os.remove(FILENAME1_)
                             print(f'-----------')
                             #time.sleep(2)
-                            break
+                            
                             
                         print("未尝试出密码")
                         error_files.append(FILENAME1_)
@@ -128,7 +128,7 @@ for root, dirs, files in os.walk(contents):
                         print('')
                         print('')
                         print(f'                解压失败 ')
-                        break
+                        
 
                     #print("不应执行此行")
 print('=============================================')
