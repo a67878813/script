@@ -123,8 +123,14 @@ for root, dirs, files in os.walk(contents):
                             
                         print("未尝试出密码")
                         error_files.append(FILENAME1_)
+                        print("             ",cmd_error)
+                        print('')
+                        print('')
+                        print('')
+                        print(f'                解压失败 ')
                         break
 
+                    print("不应执行此行")
 print('=============================================')
 print('end \n\r 未解压文件如下')
 for i in error_files:
