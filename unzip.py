@@ -129,8 +129,8 @@ for root, dirs, files in os.walk(contents):
                         print(f"             解压失败 密码未知")
                         #print(f"             解压失败 密码未知{cmd_error}")
                         error_files.append(FILENAME1_)
-                break
-            s
+                        break
+            
 print('=============================================')
 print('end \n\r 未解压文件如下')
 for i in error_files:
