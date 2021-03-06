@@ -1,17 +1,10 @@
-#!/usr/bin/python3
-# coding: utf-8
+# -*- coding: gbk -*-
 import os
 import os.path
-#import json
-#import random
-#import pickle
 import time
-#import subprocess
 import sys
-
-import zipfile
 import subprocess
-contents = 'I:\\è¿…é›·ä¸‹è½½'
+contents = 'I:\\Ñ¸À×ÏÂÔØ'
 print(contents)
 
 
@@ -20,15 +13,20 @@ error_files=[]
 pass_lists = os.listdir(contents)
 pass_lists2 =[]
 for i in pass_lists:
-    j  = i.replace('æ˜Ÿå·','*')#.replace('&','^&')
+    j  = i.replace('ĞÇºÅ','*')#.replace('&','^&')
     pass_lists2.append(j)
 print(pass_lists2)
 for root, dirs, files in os.walk(contents):
+    nested_levels = root.split('\\')
+    #if len(nested_levels) ==4:
+    #    del dirs[:]
+    #del dirs[:]½«É¾³ıÁĞ±íµÄÄÚÈİ£¬¶ø²»ÊÇÓÃ¶ÔĞÂÁĞ±íµÄÒıÓÃÌæ»»dirs¡£ÕâÑù×öÊ±£¬¾ÍµØĞŞ¸ÄÁĞ±íºÜÖØÒª¡£
+
     for name in files:
+
+        if ('7z' in name[-4:] ) or('zip' in name[-4:] )  :
         
-            
-        
-        if ('.7z' in name[-4:] ) or('.zip' in name[-4:] )  :
+            print('         --------')
             END_ = 0
             #print(f'name ={name}')
             #print(f'dirs ={dirs}')
@@ -38,101 +36,84 @@ for root, dirs, files in os.walk(contents):
             a2_ = a_.split('\\')
             #print(a2_)
             PASSWORD1_ = a2_[1]
-            if "æ˜Ÿå·" in PASSWORD1_:
-                PASSWORD1_ = PASSWORD1_.replace('æ˜Ÿå·','*')
-            #print(f'password ={PASSWORD1_}')
-            PATH2_ = a2_[1:]
-            PATH2str = '\\'.join(PATH2_)
-            #print(f'path2 = {PATH2str}')
-            #print(a2_)
+            if "ĞÇºÅ" in PASSWORD1_:
+                PASSWORD1_ = PASSWORD1_.replace('ĞÇºÅ','*')
+            #print(f'        password ={PASSWORD1_}')
+            
             ex_dir = root  +"\\"
             ex_dir = '\"' + ex_dir  + '\"'
-            #ex_dir = ex_dir.replace('&','`&')
-            #print(f'exdir={ex_dir}')
-            #print(ex_dir.split(':'))
             FILENAME1_ = root +'\\'+ name
             FILENAME2_ = '\"' + FILENAME1_  + '\"'
-            print('         --------')
             print(f'        filename1 ={FILENAME1_}')
-            PASSWORD1_ = PASSWORD1_.replace('&','^&')
-            
-            
-            #è§£å‹æµç¨‹
-            
-            #try:
+
+            #½âÑ¹Á÷³Ì
             SSTR = ' '.join(["7z.exe","x -aoa ",FILENAME2_,f"-p{PASSWORD1_}",f"-o{ex_dir}",])
             print(f"        SSTR = {SSTR}")
-            
-            
-            obj = subprocess.Popen(SSTR,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-
+            obj = subprocess.Popen(SSTR,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
             cmd_out,cmd_error = obj.communicate()
-
             #print(cmd_out)
-            if ("Everything is Ok" in cmd_out) and ("ERROR" not in cmd_out):
-                print(f'è§£å‹æˆåŠŸ')
-                print(f'åˆ é™¤æ–‡ä»¶{FILENAME1_}')
+            if "Everything is Ok" in cmd_out:
+                #print(f'½âÑ¹³É¹¦')
+                print('\033[1;32m' + '½âÑ¹³É¹¦' + '\033[0m')
+                print(f'É¾³ıÎÄ¼ş{FILENAME1_}')
                 os.remove(FILENAME1_)
-                #
-                
             else:
-                #print(cmd_out)
-                print("")
-                print("")
-                print("")
-                #print(cmd_error)
-                print(f'                å¤±è´¥ï¼Œå¾…å°è¯•å…¶ä»–å¯†ç    {cmd_error}')
-                print("")
+                errot_2 = cmd_error.strip()[:50]
+                print("             ",errot_2)
+                print(f'                ÎÄ¼ş¼ĞÃÜÂëÊ§Ğ§ ')
                 if "Wrong password" in cmd_error:
-                    for i in pass_lists2:
+                    for i in pass_lists2:#
                         SSTR = ' '.join(["7z.exe","x -aoa ",FILENAME2_,f"-p{i}",f"-o{ex_dir}",])
-                        print(f"                                å°è¯•å¯†ç     {i}                ",end='\r')
+                        print(f"                                   ³¢ÊÔÃÜÂë  {i}                ",end='\r')
                         obj = subprocess.Popen(SSTR,bufsize=1 , stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                         cmd_out,cmd_error = obj.communicate()
                         #print(cmd_error)
-                        if ("Everything is Ok" in cmd_out) and ("ERROR" not in cmd_out):
+                        if "Everything is Ok" in cmd_out:
                             print("")
                             print("")
                             print("")
-                            print(f'è§£å‹æˆåŠŸï¼ï¼ï¼ï¼ï¼ï¼ï¼å¯†ç ={i}ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼')
-                            print(f'')
-                            
-                            with open(FILENAME1_+f"æˆåŠŸå¯†ç {i}.txt",mode="w",encoding="utf-8") as f:  #å†™æ–‡ä»¶,å½“æ–‡ä»¶ä¸å­˜åœ¨æ—¶,å°±ç›´æ¥åˆ›å»ºæ­¤æ–‡ä»¶
-                                #print("		åˆ›å»ºæ–‡ä»¶æˆåŠŸ")
+                            print('\033[1;32m' + '½âÑ¹³É¹¦' + '\033[0m')
+                            print(f'½âÑ¹³É¹¦£¡£¡£¡£¡£¡£¡£¡ÃÜÂë={i}£¡£¡£¡£¡£¡£¡£¡£¡')
+                            with open(FILENAME1_+f"³É¹¦ÃÜÂë{i}.txt",mode="w",encoding="utf-8") as f:  #Ğ´ÎÄ¼ş,µ±ÎÄ¼ş²»´æÔÚÊ±,¾ÍÖ±½Ó´´½¨´ËÎÄ¼ş
                                 pass
-                            print(f'åˆ é™¤æ–‡ä»¶{FILENAME1_}')
+                            print(f'É¾³ıÎÄ¼ş{FILENAME1_}')
                             os.remove(FILENAME1_)
                             END_ =1
-                            print(f'-----------')
+                            print(f'')
                             time.sleep(1)
                             break
+                        else:
+                            pass
+                    if END_ == 1:
+                        continue #ÏÂÒ»ÎÄ¼ş
                     if END_ == 0:
                         print("")
                         print("")
                         SSTR = ' '.join(["7z.exe","x -aoa ",FILENAME2_,f"-o{ex_dir}",])
-                        #print(f"                                 å°è¯•æ— å¯†ç è§£å‹                ",end='\r')
+                        #print(f"                                 ³¢ÊÔÎŞÃÜÂë½âÑ¹                ",end='\r')
                         obj = subprocess.Popen(SSTR,bufsize=1 , stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                         cmd_out,cmd_error = obj.communicate()
                         #print(cmd_error)
-                        if ("Everything is Ok" in cmd_out) and ("ERROR" not in cmd_out):
-                            print(f'è§£å‹æˆåŠŸ')
-                            print(f'ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼æ— å¯†ç ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼')
-                            with open(FILENAME1_+f"æ— å¯†ç .txt",mode="w",encoding="utf-8") as f:  #å†™æ–‡ä»¶,å½“æ–‡ä»¶ä¸å­˜åœ¨æ—¶,å°±ç›´æ¥åˆ›å»ºæ­¤æ–‡ä»¶
+                        if "Everything is Ok" in cmd_out:
+                            print('\033[1;32m' + '½âÑ¹³É¹¦' + '\033[0m')
+                            #print(f'½âÑ¹³É¹¦')
+                            print(f'£¡£¡£¡£¡£¡£¡£¡£¡ÎŞÃÜÂë£¡£¡£¡£¡£¡£¡£¡£¡')
+                            with open(FILENAME1_+f"ÎŞÃÜÂë.txt",mode="w",encoding="utf-8") as f:  #Ğ´ÎÄ¼ş,µ±ÎÄ¼ş²»´æÔÚÊ±,¾ÍÖ±½Ó´´½¨´ËÎÄ¼ş
                                 pass
-                                
-                            print(f'åˆ é™¤æ–‡ä»¶{FILENAME1_}')
+                            print(f'É¾³ıÎÄ¼ş{FILENAME1_}')
                             os.remove(FILENAME1_)
-                            
-                        print("")
-                        print("")
-                        print("")
-                        print(f"             è§£å‹å¤±è´¥ å¯†ç æœªçŸ¥")
-                        #print(f"             è§£å‹å¤±è´¥ å¯†ç æœªçŸ¥{cmd_error}")
-                        error_files.append(FILENAME1_)
-                        
-            
+                            continue##ÏÂÒ»ÎÄ¼ş
+                        else:
+                            print("")
+                            print("")
+                            print("")
+                            print(f"                ½âÑ¹Ê§°Ü ÃÜÂëÎ´Öª")
+                            error_files.append(FILENAME1_)
+                            continue#ÏÂÒ»ÎÄ¼ş
+                    #print("´ËĞĞ")
+
 print('=============================================')
-print('end \n\r æœªè§£å‹æ–‡ä»¶å¦‚ä¸‹')
+print('end \n\r Î´½âÑ¹ÎÄ¼şÈçÏÂ')
 for i in error_files:
     print(i)
     

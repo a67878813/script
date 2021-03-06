@@ -1,18 +1,15 @@
-#!/usr/bin/python3
-# coding: utf-8
+# -*- coding: gbk -*-
 import os
 import os.path
 import time
 import sys
-import time
 import subprocess
-contents = 'I:\\è¿…é›·ä¸‹è½½'
+contents = 'I:\\Ñ¸À×ÏÂÔØ'
 print(contents)
-from rarfile import RarFile
 pass_lists = os.listdir(contents)
 pass_lists2 =[]
 for i in pass_lists:
-    j  = i.replace('æ˜Ÿå·','*')#.replace('&','^&')
+    j  = i.replace('ĞÇºÅ','*')
     pass_lists2.append(j)
 print(pass_lists2)
 s =[]
@@ -29,13 +26,9 @@ for root, dirs, files in os.walk(contents):
             a2_ = a_.split('\\')
             #print(a2_)
             PASSWORD1_ = a2_[1]
-            if "æ˜Ÿå·" in PASSWORD1_:
-                PASSWORD1_ = PASSWORD1_.replace('æ˜Ÿå·','*')
-
+            if "ĞÇºÅ" in PASSWORD1_:
+                PASSWORD1_ = PASSWORD1_.replace('ĞÇºÅ','*')
             #print(f'    password ={PASSWORD1_}')
-            PATH2_ = a2_[1:]
-            PATH2str = '\\'.join(PATH2_)
-            #print(f'path2 = {PATH2str}')
             #print(a2_)
             ex_dir = root  +"\\"
             ex_dir = '\"' + ex_dir  + '\"'
@@ -45,93 +38,77 @@ for root, dirs, files in os.walk(contents):
             FILENAME1_ = root +'\\'+ name
             FILENAME2_ = '\"' + FILENAME1_  + '\"'
             print(f'    filename1 ={FILENAME1_}')
-            PASSWORD1_ = PASSWORD1_.replace('&','^&')
             
-            
-            #è§£å‹æµç¨‹
-            
+            #½âÑ¹Á÷³Ì
             SSTR = ' '.join(["unrar.exe","x",FILENAME2_,f"-p{PASSWORD1_}","-o+",ex_dir])
-            print(f"    SSTR = {SSTR}")
-            obj = subprocess.Popen(SSTR,bufsize=1 ,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+            #print(f"    SSTR = {SSTR}")
+            obj = subprocess.Popen(SSTR ,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
             cmd_out,cmd_error = obj.communicate()
-
             if ("All OK" in cmd_out):
                 print(f'')
                 print(f'')
                 print(f'')
-                print(f'è§£å‹æˆåŠŸ,åˆ é™¤æ–‡ä»¶{FILENAME1_}')
+                print('\033[1;32m' + '½âÑ¹³É¹¦' + '\033[0m')
+                print(f'½âÑ¹³É¹¦,É¾³ıÎÄ¼ş{FILENAME1_}')
                 print(f'')
                 os.remove(FILENAME1_)
-                #print(f'-----------')
-                
             else:
-                #print(cmd_out)
-                print("             ",cmd_error)
-                print('')
-                print('')
-                print('')
-                print(f'                è§£å‹å¤±è´¥ ')
-                print('')
+                #print(cmd_error)
+                errot_2 = cmd_error.strip()[:50]
+                print("             ",errot_2)
+                print(f'                ÎÄ¼ş¼ĞÃÜÂëÊ§Ğ§ ')
                 if ("Incorrect password" in cmd_error) or ('error' in cmd_error):
                     for i in pass_lists2:
                         SSTR = ' '.join(["unrar.exe","x",FILENAME2_,f"-p{i}","-o+",ex_dir])
                         #print(f"SSTR = {SSTR}")
                         #print('')
-                        print(f"                                   å°è¯•å¯†ç   {i}                ",end='\r')
+                        print(f"                                   ³¢ÊÔÃÜÂë  {i}                ",end='\r')
                         obj = subprocess.Popen(SSTR,bufsize=1 , stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                         cmd_out,cmd_error = obj.communicate()
-
-                        #print(cmd_error)
                         if ("All OK" in cmd_out):
                             print('')
                             print('')
                             print('')
-                            print(f'è§£å‹æˆåŠŸï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼å¯†ç =    {i}     ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼')
-                            print(f'åˆ é™¤æ–‡ä»¶{FILENAME1_}')
-                            with open(FILENAME1_+f"æˆåŠŸå¯†ç {i}.txt",mode="w",encoding="utf-8") as f:  #å†™æ–‡ä»¶,å½“æ–‡ä»¶ä¸å­˜åœ¨æ—¶,å°±ç›´æ¥åˆ›å»ºæ­¤æ–‡ä»¶
+                            print('\033[1;32m' + '½âÑ¹³É¹¦' + '\033[0m')
+                            print(f'½âÑ¹³É¹¦£¡£¡£¡£¡£¡£¡£¡£¡ÃÜÂë=    {i}     £¡£¡£¡£¡£¡£¡£¡£¡')
+                            print(f'É¾³ıÎÄ¼ş{FILENAME1_}')
+                            with open(FILENAME1_+f"³É¹¦ÃÜÂë{i}.txt",mode="w",encoding="utf-8") as f:  #Ğ´ÎÄ¼ş,µ±ÎÄ¼ş²»´æÔÚÊ±,¾ÍÖ±½Ó´´½¨´ËÎÄ¼ş
                                 pass
                             END_ = 1
                             os.remove(FILENAME1_)
                             #print(f'-----------')
-                            time.sleep(1)
+                            #time.sleep(1)
                             break
-                            
+                    #ËùÓĞÃÜÂë¾ù³¢ÊÔ£¬ ³¢ÊÔÎŞÃÜÂë½âÑ¹
+                    if END_ == 1:
+                        continue #ÏÂÒ»ÎÄ¼ş
                     if END_ == 0:
-                        #print('     å°è¯•æ— å¯†ç è§£å‹')
+                        #print('     ³¢ÊÔÎŞÃÜÂë½âÑ¹')
                         SSTR = ' '.join(["unrar.exe","x",FILENAME2_,f"-p{i}","-o+",ex_dir])
-                        #print(f"SSTR = {SSTR}")
-                        
-                        print("")
-                        #print(f"        FILE=={FILENAME1_[10:30]}ï¼Œ  æ— å¯†ç               ",end='\r')
                         obj = subprocess.Popen(SSTR,bufsize=1 , stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                         cmd_out,cmd_error = obj.communicate()
-
-                        #print(cmd_error)
                         if ("All OK" in cmd_out):
                             print("")
                             print("")
                             print("")
-                            print(f'è§£å‹æˆåŠŸï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼æ— å¯†ç è§£å‹ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼')
-                            print(f'åˆ é™¤æ–‡ä»¶{FILENAME1_}')
-                            with open(FILENAME1_+f"æ— å¯†ç è§£å‹.txt",mode="w",encoding="utf-8") as f:  #å†™æ–‡ä»¶,å½“æ–‡ä»¶ä¸å­˜åœ¨æ—¶,å°±ç›´æ¥åˆ›å»ºæ­¤æ–‡ä»¶
-                                
+                            print('\033[1;32m' + '½âÑ¹³É¹¦' + '\033[0m')
+                            print(f'½âÑ¹³É¹¦£¡£¡£¡£¡£¡£¡£¡£¡ÎŞÃÜÂë½âÑ¹£¡£¡£¡£¡£¡£¡£¡£¡')
+                            print(f'É¾³ıÎÄ¼ş{FILENAME1_}')
+                            with open(FILENAME1_+f"ÎŞÃÜÂë½âÑ¹.txt",mode="w",encoding="utf-8") as f:  #Ğ´ÎÄ¼ş,µ±ÎÄ¼ş²»´æÔÚÊ±,¾ÍÖ±½Ó´´½¨´ËÎÄ¼ş
                                 pass
                             os.remove(FILENAME1_)
-                            print(f'-----------')
-                            #time.sleep(2)
-                            
-                            
-                        print("æœªå°è¯•å‡ºå¯†ç ")
-                        error_files.append(FILENAME1_)
-                        print("             ",cmd_error)
-                        print('')
-                        print('')
-                        print('')
-                        print(f'                è§£å‹å¤±è´¥ ')
+                            continue
+                        else:
+                            print("")
+                            print("")
+                            print("")
+                            print(f"                ½âÑ¹Ê§°Ü ÃÜÂëÎ´Öª")
+                            error_files.append(FILENAME1_)
+                            continue#ÏÂÒ»ÎÄ¼ş
                         
 
-                    #print("ä¸åº”æ‰§è¡Œæ­¤è¡Œ")
+                    #print("²»Ó¦Ö´ĞĞ´ËĞĞ")
 print('=============================================')
-print('end \n\r æœªè§£å‹æ–‡ä»¶å¦‚ä¸‹')
+print('end \n\r Î´½âÑ¹ÎÄ¼şÈçÏÂ')
 for i in error_files:
     print(i)
