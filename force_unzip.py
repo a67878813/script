@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--x", help="解压源", type=str,default="default")
 parser.add_argument("--target", help="解压目标", type=str,default="default")
 args = parser.parse_args()
-#contents = 'O:\\sex169下载'
+
 #contents = "I:\\迅雷下载"
 if args.x == 'default':
     contents = "W:\\b\\0020210209\\video"
