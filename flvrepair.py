@@ -87,7 +87,8 @@ for line in end_list:
     salt_ = random.randint(110, 880)
     print(colored("进行meta注入 = "+str(line),"green"))
     try:
-        child = subprocess.Popen(["/usr/bin/yamdi","-i",line,"-o",contents+"/_temp/output.tmp"],stderr=subprocess.STDOUT)
+        child = subprocess.Popen(["/usr/bin/yamdi","-i",line,"-o",contents+"/_temp/output.tmp"])
+        
         child.wait()
         
     except:
@@ -98,7 +99,8 @@ for line in end_list:
         continue
     time.sleep(10)
     try:
-        child2 = subprocess.Popen(["mv","-f",contents+"/_temp/output.tmp",line],stderr=subprocess.STDOUT)
+        child2 = subprocess.Popen(["mv","-f",contents+"/_temp/output.tmp",line])
+        #do not redirect std err to repair malfunction that adding wrong items in end_list due to processing time unmatching time limit. 
         child2.wait()    #等待子进程结束，父进程继续
     except :
         error_counts +=1
